@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		Debug.Log(rigidbody2D.velocity.y);
+		//Debug.Log(rigidbody2D.velocity.y);
 		if (!hooked)
 		{
 			if (rigidbody2D.velocity.y > 0 && rigidbody2D.gravityScale != 2)
@@ -83,8 +83,8 @@ public class Player : MonoBehaviour
             //transform.position = new Vector3(transform.position.x - 0.2f, transform.position.y,0);
         }
 
-		if(rigidbody2D.velocity.magnitude > maxSpeed) {
-			rigidbody2D.velocity = rigidbody2D.velocity * 0.9f;
+		if(rigidbody2D.velocity.x > maxSpeed) {
+			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.95f,rigidbody2D.velocity.y);
 		}
 
 
