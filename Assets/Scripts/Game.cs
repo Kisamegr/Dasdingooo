@@ -24,8 +24,8 @@ public class Game : MonoBehaviour {
 	private Transform lastGround;
 	private Transform lastCeiling;
 
-	private Transform camTrans;
-	private Transform player;
+	public Transform camTrans;
+	public Transform player;
 	private Transform cleaner;
 	
 	private Queue groundQueue;
@@ -35,8 +35,8 @@ public class Game : MonoBehaviour {
 		groundQueue = new Queue();
 		ceilingQueue = new Queue();
 
-		camTrans =  GameObject.FindGameObjectWithTag("MainCamera").transform;
-		player = GameObject.FindGameObjectWithTag("Player").transform;
+		//camTrans =  GameObject.FindGameObjectWithTag("MainCamera").transform;
+		//player = GameObject.FindGameObjectWithTag("Player").transform;
 		cleaner = camTrans.FindChild("Cleaner");
 
 		Vector3 cameraZero = camTrans.camera.ViewportToWorldPoint(new Vector3(0,0,0));

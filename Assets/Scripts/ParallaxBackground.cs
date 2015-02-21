@@ -14,7 +14,7 @@ public class ParallaxBackground : MonoBehaviour
 
     private float[] speed;
 
-    private Player player;
+    public Player player;
 
 
     public float width;
@@ -23,7 +23,7 @@ public class ParallaxBackground : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         Debug.Log(player);
         secondLayers = new GameObject[layers.Length];
         for (int i = 0; i < layers.Length; i++)

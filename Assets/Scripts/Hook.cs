@@ -5,9 +5,7 @@ public class Hook : MonoBehaviour
 {
     //
     public GameObject player;
-    //
-    public float hookAngle;
-    //
+    //    
     public float hookForce;
     //
     public float extraForce = 2f;
@@ -15,6 +13,9 @@ public class Hook : MonoBehaviour
     private Vector3 hookVector;
     //
     private float hookLength;
+
+	public float hookAngle;
+
     //
     private Vector2 extraForceDirection;
     //
@@ -24,12 +25,15 @@ public class Hook : MonoBehaviour
     //
     LineRenderer line;
 
+	private Vector3 lineStart;
+
     // Use this for initialization
     void Start()
     {
         hit = false;
         hookLength = 0;
         line = (LineRenderer)gameObject.GetComponent<LineRenderer>();
+		lineStart = new Vector3(player.GetComponent<DistanceJoint2D>().anchor.x,player.GetComponent<DistanceJoint2D>().anchor.y,0);
 
         hookVector = new Vector3(Mathf.Cos(Mathf.Deg2Rad * hookAngle), Mathf.Sin(Mathf.Deg2Rad * hookAngle), 0);
 
@@ -64,7 +68,7 @@ public class Hook : MonoBehaviour
             transform.position = player.transform.position + hookLength * hookVector;
         }
 
-        line.SetPosition(0, player.transform.position);
+        line.SetPosition(0,  player.transform.position + lineStart);
         
         //Leptomereies
         if (hit)
@@ -113,6 +117,8 @@ public class Hook : MonoBehaviour
 
             player.rigidbody2D.AddForce(extraForceDirection * extraForce, ForceMode2D.Impulse);
 			player.GetComponent<Player>().hooked = true;
+			player.GetComponent<Player>().shotHook = false;
+
 
             player.rigidbody2D.gravityScale = 0;
 

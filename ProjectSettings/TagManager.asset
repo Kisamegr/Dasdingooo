@@ -5,6 +5,7 @@ TagManager:
   tags:
   - Ground
   - Ceiling
+  - Platform
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
