@@ -40,7 +40,6 @@ public class ParallaxBackground : MonoBehaviour
         for (int i = 0; i < speed.Length; i++)
         {
             speed[i] = constantSpeed[i] + maxSpeed[i] * player.rigidbody2D.velocity.x / player.maxSpeed;
-            Debug.Log(speed[i]);
         }
 
 

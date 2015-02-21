@@ -94,7 +94,7 @@ public class Hook : MonoBehaviour
             float xColPoint = (transform.position.x - other.transform.position.x);// / other.renderer.bounds.size.x;
 
             //To katw shmeio tou ceiling
-            float yColPoint = -other.renderer.bounds.extents.y;// -transform.renderer.bounds.max.y;
+			float yColPoint = - other.bounds.extents.y +  (other.bounds.center.y - other.transform.position.y);// -transform.renderer.bounds.max.y;
 
             Vector2 connectedAnchor = new Vector2(xColPoint, yColPoint);
 

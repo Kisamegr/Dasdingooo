@@ -20,6 +20,7 @@ public class Game : MonoBehaviour {
 
 
 	private float groundWidth;
+	private float ceilingWidth;
 	private Transform lastGround;
 	private Transform lastCeiling;
 
@@ -47,16 +48,28 @@ public class Game : MonoBehaviour {
 
 		//Debug.Log(cameraTop);
 
-		groundWidth = groundPrefab.renderer.bounds.size.x;
+		groundWidth = groundPrefab.transform.GetChild(0).renderer.bounds.size.x -2;
+		ceilingWidth = ceilingPrefab.renderer.bounds.size.x;
+		//groundWidth = 10;
 
 		GameObject ground=null,ceiling=null;
+
+		bool reverse = false;
 
 		for(int i=0 ; i<8 ; i++) {
 			Vector3 pos = new Vector3(cameraZero.x + groundWidth * i,yMin,0);
 			ground = (GameObject) GameObject.Instantiate(groundPrefab,pos,Quaternion.identity);
+
+			Transform cog = ground.transform.GetChild(1);
+			cog.localScale = new Vector3(groundWidth/cog.renderer.bounds.size.x,cog.localScale.y,cog.localScale.z);
+
+			if(reverse) 
+				ground.transform.GetChild(0).GetComponent<Cog>().rotationSpeed *= -1;
+
+			reverse = !reverse;
 			groundQueue.Enqueue(ground.transform);
 
-			Vector3 pos2 = new Vector3(cameraZero.x + groundWidth * i, yMax,0);
+			Vector3 pos2 = new Vector3(cameraZero.x + ceilingWidth * i, yMax,0);
 			ceiling = (GameObject) GameObject.Instantiate(ceilingPrefab,pos2,Quaternion.identity);
 			ceilingQueue.Enqueue(ceiling.transform);
 
@@ -102,7 +115,7 @@ public class Game : MonoBehaviour {
 			
 			Transform ceiling = (Transform) ceilingQueue.Dequeue();
 			ceilingQueue.Enqueue(ceiling);
-			ceiling.position = new Vector3(lastCeiling.position.x + groundWidth, ceiling.position.y, 0);
+			ceiling.position = new Vector3(lastCeiling.position.x + ceilingWidth, ceiling.position.y, 0);
 			
 			lastCeiling = ceiling;
 			
