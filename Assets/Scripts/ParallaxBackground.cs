@@ -23,8 +23,9 @@ public class ParallaxBackground : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        Debug.Log(player);
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+      
         secondLayers = new GameObject[layers.Length];
         for (int i = 0; i < layers.Length; i++)
         {
@@ -37,28 +38,43 @@ public class ParallaxBackground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
+        float playerNormalizedSpeed;
+
+        if (player.inCannon)
+        {
+            playerNormalizedSpeed = 0;
+        }
+        else
+        {
+            playerNormalizedSpeed =  player.rigidbody2D.velocity.x / player.maxSpeed;
+        }
+
+
         for (int i = 0; i < speed.Length; i++)
         {
-            speed[i] = constantSpeed[i] + maxSpeed[i] * player.rigidbody2D.velocity.x / player.maxSpeed;
+            speed[i] = constantSpeed[i] + maxSpeed[i] * playerNormalizedSpeed;
         }
 
 
 
         transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
-        
+
 
         for (int i = 0; i < layers.Length; i++)
         {
             layers[i].transform.Translate(-speed[i] * Time.deltaTime, 0, 0);
+            secondLayers[i].transform.Translate(-speed[i] * Time.deltaTime, 0, 0);
+
+
             if (layers[i].transform.localPosition.x < -width)
             {
-                layers[i].transform.Translate(2 * width, 0, 0);
+                layers[i].transform.position = secondLayers[i].transform.position + new Vector3(width, 0, 0);
             }
-
-            secondLayers[i].transform.Translate(-speed[i] * Time.deltaTime, 0, 0);
             if (secondLayers[i].transform.localPosition.x < -width)
             {
-                secondLayers[i].transform.Translate(2 * width, 0, 0);
+                secondLayers[i].transform.position = layers[i].transform.position + new Vector3(width, 0, 0);
             }
         }
 

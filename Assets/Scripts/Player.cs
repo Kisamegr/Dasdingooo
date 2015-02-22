@@ -12,6 +12,10 @@ public class Player : MonoBehaviour
 	public bool jumped;
 	public bool startJump;
 
+
+    public bool inCannon;
+    public bool firedFromCannon;
+
 	public float moveForce;
 	public float maxSpeed;
 	public float jumpForce;
@@ -52,6 +56,29 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //An einai mesa sto kanoni min kaneis tpt
+        if (inCannon)
+        {
+            return;
+        }
+
+        //An exei petaxtei apo to kanoni tote perimene mexri na arxisei na katevainei. Ka8ws anevainei min kaneis tpt
+        if (firedFromCannon)
+        {
+            if (rigidbody2D.velocity.y > -0.1)
+            {
+                return;
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+                firedFromCannon = false;
+            }
+        }
+
+
+
+
 		running = false;
 		startJump = false;
 		zeta = transform.rotation.eulerAngles.z;
@@ -82,6 +109,7 @@ public class Player : MonoBehaviour
 			jumped = false;
 		}
 
+
 		if( shotHook || hooked) {
 
 			//Vector3 hh = hook.transform.position - transform.position;
@@ -90,7 +118,7 @@ public class Player : MonoBehaviour
 
 		}
 
-        //if(Input.GetAxis("Fire1") > 0 ) {
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
 			shootHook ();
@@ -119,11 +147,7 @@ public class Player : MonoBehaviour
         }
 
 
-		if(rigidbody2D.velocity.x > maxSpeed) {
-			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x * 0.95f,rigidbody2D.velocity.y);
-		}
-
-
+		
 		if(Input.GetKeyDown(KeyCode.Z) && !jumped && !hooked) {
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x,0);
 			rigidbody2D.AddForce(Vector3.up*jumpForce , ForceMode2D.Impulse);
@@ -132,13 +156,20 @@ public class Player : MonoBehaviour
 		}
 
 
+
+        if (rigidbody2D.velocity.x > maxSpeed)
+        {
+            rigidbody2D.velocity = new Vector2(maxSpeed, rigidbody2D.velocity.y);
+        }
+
+
+
 		anim.SetBool("running",running);
 		anim.SetBool("jump",startJump);
 		anim.SetFloat("ySpeed",rigidbody2D.velocity.y);
 		anim.SetBool("shotHook",shotHook);
 		anim.SetBool("hooked",hooked);
 		anim.SetBool("onAir",onAir);
-
     }
 
 
@@ -202,4 +233,21 @@ public class Player : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+
+
+    public void fireFromCannon(Vector2 cannonForce)
+    {
+        transform.parent = null;
+        startJump = true;
+        anim.SetBool("jump", startJump);
+        rigidbody2D.AddForce(cannonForce, ForceMode2D.Impulse);
+        if (rigidbody2D.velocity.y > 0)
+        {
+            rigidbody2D.gravityScale = 2;
+        }
+        inCannon = false;
+        firedFromCannon = true;
+    }
+
 }
