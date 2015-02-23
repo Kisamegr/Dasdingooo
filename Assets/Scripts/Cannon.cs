@@ -37,7 +37,7 @@ public class Cannon : MonoBehaviour
     void Start()
     {
         
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
         player.transform.parent = transform;
         player.transform.localPosition = transform.FindChild("PlayerPosition").localPosition;
         

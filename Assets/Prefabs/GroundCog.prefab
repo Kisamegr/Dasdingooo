@@ -9,8 +9,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 420892}
   - 212: {fileID: 21220894}
-  - 114: {fileID: 11420896}
   - 58: {fileID: 5871716}
+  - 114: {fileID: 11496310}
   m_Layer: 0
   m_Name: cog
   m_TagString: Ground
@@ -98,7 +98,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_Radius: 4.07999992
   m_Center: {x: 0, y: 0}
---- !u!114 &11420896
+--- !u!114 &11496310
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,10 +106,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 120892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f5d49f3038c95447936a756b0888ed3, type: 3}
+  m_Script: {fileID: 11500000, guid: 31520ab9006de1d42ba975fdffc3bd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: .5
+  rotationSpeed: 1
 --- !u!212 &21220894
 SpriteRenderer:
   m_ObjectHideFlags: 1

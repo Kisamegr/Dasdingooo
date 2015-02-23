@@ -75,7 +75,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_1
       rect:
@@ -85,7 +85,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_2
       rect:
@@ -95,7 +95,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_3
       rect:
@@ -105,7 +105,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_4
       rect:
@@ -115,7 +115,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_5
       rect:
@@ -125,7 +125,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_6
       rect:
@@ -135,7 +135,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_7
       rect:
@@ -145,7 +145,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_8
       rect:
@@ -155,7 +155,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_9
       rect:
@@ -165,7 +165,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_10
       rect:
@@ -175,7 +175,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_11
       rect:
@@ -185,7 +185,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_12
       rect:
@@ -195,7 +195,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_13
       rect:
@@ -205,7 +205,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_14
       rect:
@@ -215,7 +215,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_15
       rect:
@@ -225,7 +225,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_16
       rect:
@@ -235,7 +235,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_17
       rect:
@@ -245,7 +245,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_18
       rect:
@@ -255,7 +255,7 @@ TextureImporter:
         width: 275
         height: 275
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_19
       rect:
@@ -264,8 +264,8 @@ TextureImporter:
         y: 1223
         width: 275
         height: 275
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .574043393, y: .521155}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_20
       rect:
@@ -274,8 +274,8 @@ TextureImporter:
         y: 1223
         width: 275
         height: 275
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .595199287, y: .505288541}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_21
       rect:
@@ -284,8 +284,8 @@ TextureImporter:
         y: 948
         width: 275
         height: 275
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .579332471, y: .521155477}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_22
       rect:
@@ -294,8 +294,8 @@ TextureImporter:
         y: 948
         width: 275
         height: 275
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .603132188, y: .5105775}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: robotBoy_roll_23
       rect:
@@ -304,8 +304,8 @@ TextureImporter:
         y: 948
         width: 275
         height: 275
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: .603132308, y: .502644241}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 

@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
 	public float jumpForce;
 	public float hookDelay;
 	public float hookAngle;
+	public float stabilizerForce;
 
     private GameObject hook;
     private DistanceJoint2D hookJoint;
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour
 		jumped = false;
         hookJoint = (DistanceJoint2D)gameObject.GetComponent<DistanceJoint2D>();
         hookJoint.enabled = false;
-		anim = gameObject.GetComponent<Animator>();
+		anim = transform.GetChild(0).GetComponent<Animator>();
 
 
 		//rigidbody2D.centerOfMass = new Vector2(0,-renderer.bounds.extents.y);
@@ -56,6 +57,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+	
         //An einai mesa sto kanoni min kaneis tpt
         if (inCannon)
         {
@@ -67,15 +69,17 @@ public class Player : MonoBehaviour
         {
             if (rigidbody2D.velocity.y > -0.1)
             {
+				anim.SetBool("jump",false);
                 return;
             }
             else
             {
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 firedFromCannon = false;
+				rigidbody2D.fixedAngle = false;
+
             }
         }
-
 
 
 
@@ -87,6 +91,31 @@ public class Player : MonoBehaviour
 			zeta = zeta - 360;
 
 		//Debug.Log(zeta);
+
+		// Stabilizer
+		if(!shotHook && !hooked && !onAir) 
+			rigidbody2D.AddTorque(-zeta * stabilizerForce,ForceMode2D.Force);
+
+		if(onAir)
+			rigidbody2D.AddTorque(-zeta * stabilizerForce/30 - 5,ForceMode2D.Force);
+
+		if(shotHook)
+			rigidbody2D.AddTorque(-zeta * stabilizerForce  -20,ForceMode2D.Force);
+
+		
+		if(hooked) {
+			Vector3 hookVec = hook.transform.position - transform.position;
+			float angle = Vector3.Angle(Vector3.up,hookVec);
+
+			if(transform.position.x < hook.transform.position.x)
+				angle *= -1;
+
+			rigidbody2D.AddTorque(-zeta * stabilizerForce +  angle*2.5f,ForceMode2D.Force);
+
+
+		}
+	
+
 
 		//Debug.Log(rigidbody2D.velocity.y);
 		if (!hooked)
@@ -102,8 +131,7 @@ public class Player : MonoBehaviour
 
 
 
-			if(!shotHook)
-				rigidbody2D.AddTorque(-zeta * 0.02f,ForceMode2D.Force);
+
 		}
 		else {
 			jumped = false;
@@ -123,6 +151,7 @@ public class Player : MonoBehaviour
         {
 			shootHook ();
         }
+
         else if (Input.GetKeyUp(KeyCode.X))
         {
 			cancelHook();
@@ -239,8 +268,8 @@ public class Player : MonoBehaviour
     public void fireFromCannon(Vector2 cannonForce)
     {
         transform.parent = null;
-        startJump = true;
-        anim.SetBool("jump", startJump);
+        //startJump = true;
+        anim.SetBool("jump", true);
         rigidbody2D.AddForce(cannonForce, ForceMode2D.Impulse);
         if (rigidbody2D.velocity.y > 0)
         {
