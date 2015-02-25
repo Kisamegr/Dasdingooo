@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 {
 
     public GameObject hookPrefab;
+	public GameObject brokenPrefab;
 
 
     public bool shotHook;
@@ -34,6 +35,10 @@ public class Player : MonoBehaviour
 	public bool onAir;
 	public bool facingRight;
 
+
+	private bool hitCeiling;
+	private float ceilingPenaltyStart;
+
 	private float zeta;
 
     // Use this for initialization
@@ -53,6 +58,28 @@ public class Player : MonoBehaviour
 		onAir = true;
 		facingRight = true;
     }
+
+	IEnumerator GameOver() {
+
+		cancelHook();
+
+		transform.GetChild(0).renderer.enabled = false;
+		gameObject.collider2D.enabled = false;
+
+		GameObject broken = (GameObject) Instantiate(brokenPrefab,transform.position,Quaternion.identity);
+
+		for(int i=0 ;i<broken.transform.childCount ; i++) {
+			Transform child = (Transform) broken.transform.GetChild(i);
+
+			child.rigidbody2D.velocity = rigidbody2D.velocity;
+
+		}
+
+
+		yield return new WaitForSeconds(3);
+
+		Application.LoadLevel(Application.loadedLevel);
+	}
 
     // Update is called once per frame
     void Update()
@@ -199,16 +226,23 @@ public class Player : MonoBehaviour
 		anim.SetBool("shotHook",shotHook);
 		anim.SetBool("hooked",hooked);
 		anim.SetBool("onAir",onAir);
+		anim.SetBool("hitCeiling",hitCeiling);
+
+		hitCeiling = false;
     }
 
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.tag == "Ceiling")
+		{
+			hitCeiling = true;
+			ceilingPenaltyStart = Time.time;
 			cancelHook();
+		}
 
 		if(other.collider.tag == "Ground")
-			Application.LoadLevel(Application.loadedLevel);
+			StartCoroutine(GameOver());
 
 		if(other.collider.tag == "Platform")
 		{
@@ -227,7 +261,7 @@ public class Player : MonoBehaviour
 
 	void shootHook()
 	{
-		if (!shotHook && Time.time - lastHookTime > hookDelay)
+		if (!shotHook && Time.time - lastHookTime > hookDelay && Time.time - ceilingPenaltyStart > 1.5)
 		{
 			shotHook = true;
 			hook = (GameObject)GameObject.Instantiate(hookPrefab, transform.position, Quaternion.identity);
