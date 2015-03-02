@@ -8,17 +8,10 @@ public class Game : MonoBehaviour {
 
 	public GameObject groundPrefab;
 	public GameObject ceilingPrefab;
-	public GameObject[] platforms;
 
 	public float yMax;
 	public float yMin;
 	public float cameraHeight;
-
-	public float platformFreq;
-	public float platformVar;
-	private float lastPlatformTime;
-	private float nextPlatformTime;
-	private Transform platformSpawner;
 
 	public float score;
 	public Text scoreText;
@@ -37,17 +30,14 @@ public class Game : MonoBehaviour {
 	
 	private Queue groundQueue;
 	private Queue ceilingQueue;
-	private Queue platformQueue;
 
 	void Start () {
 		groundQueue = new Queue();
 		ceilingQueue = new Queue();
-		platformQueue = new Queue();
 
 		//camTrans =  GameObject.FindGameObjectWithTag("MainCamera").transform;
 		//player = GameObject.FindGameObjectWithTag("Player").transform;
 		cleaner = camTrans.FindChild("Cleaner");
-		platformSpawner = camTrans.FindChild("PlatformSpawner");
 
 		Vector3 cameraZero = camTrans.camera.ViewportToWorldPoint(new Vector3(0,0,0));
 		Vector3 cameraTop = camTrans.camera.ViewportToWorldPoint(new Vector3(0,1,0));
@@ -55,9 +45,6 @@ public class Game : MonoBehaviour {
 
 		yMax = cameraTop.y;
 		yMin = yMax - 40;
-
-		lastPlatformTime = 0;
-		nextPlatformTime = 0;
 
 		//Debug.Log(cameraTop);
 
@@ -102,7 +89,7 @@ public class Game : MonoBehaviour {
 
 
 
-		CreatePlatform();
+
 
 	}
 
@@ -134,6 +121,7 @@ public class Game : MonoBehaviour {
 			
 		}
 
+
 		if( platformQueue.Count > 0 && ((Transform)platformQueue.Peek()).position.x < cleaner.position.x) {
 			
 			Transform platform = (Transform) platformQueue.Dequeue();
@@ -159,5 +147,9 @@ public class Game : MonoBehaviour {
 			nextPlatformTime =  Random.Range(-platformVar, platformVar) + platformFreq;
 			lastPlatformTime = Time.time;
 		}
+
 	}
+	
+
+
 }
