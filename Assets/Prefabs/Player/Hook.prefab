@@ -86,9 +86,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  hookForce: 80
-  extraForce: 7
   hookAngle: 55
+  hookForce: 80
+  extraForce: 5
 --- !u!120 &12000000
 LineRenderer:
   m_ObjectHideFlags: 1

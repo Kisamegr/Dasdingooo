@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public GameObject hookPrefab;
 	public GameObject brokenPrefab;
 
-	public bool alive;
+
     public bool shotHook;
 	public bool hooked;
 	public bool jumped;
@@ -34,20 +34,29 @@ public class Player : MonoBehaviour
 	public bool running;
 	public bool onAir;
 	public bool facingRight;
-
-	public bool leftGround;
-	public float leftGroundTime;
+   
 
 
-	private bool hitHead;
+	private bool hitCeiling;
 	private float ceilingPenaltyStart;
+    public float ceilingPenaltyDuration = 1f;
 
 	private float zeta;
+
+
+    public GameObject ghostPrefab;
+   
+    public float ghostsSpeedThreshold = 0.7f;
+    public float ghostsInitFrequency = 0.25f;
+    public float ghostsLifetime = 5f;
+    private float ghostsLastInitTime;
+
+    private SpriteRenderer spriteRenderer;
 
     // Use this for initialization
     void Start()
     {
-		alive = true;
+
         shotHook = false;
 		jumped = false;
         hookJoint = (DistanceJoint2D)gameObject.GetComponent<DistanceJoint2D>();
@@ -60,13 +69,13 @@ public class Player : MonoBehaviour
 		lastHookTime = -100;
 		running = false;
 		onAir = true;
-		leftGround = false;
 		facingRight = true;
+
+        spriteRenderer =  GetComponentInChildren<SpriteRenderer>();
     }
 
 	IEnumerator GameOver() {
 
-		alive = false;
 		cancelHook();
 
 		transform.GetChild(0).renderer.enabled = false;
@@ -92,9 +101,10 @@ public class Player : MonoBehaviour
     {
 	
         //An einai mesa sto kanoni min kaneis tpt
-        if (inCannon || !alive)
+        if (inCannon)
+        {
             return;
-        
+        }
 
         //An exei petaxtei apo to kanoni tote perimene mexri na arxisei na katevainei. Ka8ws anevainei min kaneis tpt
         if (firedFromCannon)
@@ -129,7 +139,7 @@ public class Player : MonoBehaviour
 			rigidbody2D.AddTorque(-zeta * stabilizerForce,ForceMode2D.Force);
 
 		if(onAir)
-			rigidbody2D.AddTorque(-5,ForceMode2D.Force);
+			rigidbody2D.AddTorque(-zeta * stabilizerForce/30 - 5,ForceMode2D.Force);
 
 		if(shotHook)
 			rigidbody2D.AddTorque(-zeta * stabilizerForce  -20,ForceMode2D.Force);
@@ -170,6 +180,15 @@ public class Player : MonoBehaviour
 		}
 
 
+		if( shotHook || hooked) {
+
+			//Vector3 hh = hook.transform.position - transform.position;
+
+			//rigidbody2D.AddTorque(-(zeta + 90 - hookAngle + Vector3.Angle(transform.up,hh)) * 0.04f,ForceMode2D.Force);
+
+		}
+
+        
         if (Input.GetKeyDown(KeyCode.X))
         {
 			shootHook ();
@@ -181,7 +200,7 @@ public class Player : MonoBehaviour
         }
 
 
-        if (Input.GetAxis("Horizontal") > 0 || !onAir)
+        if (Input.GetAxis("Horizontal") > 0)
         {
 			running = true;
 			if(!facingRight)
@@ -189,7 +208,7 @@ public class Player : MonoBehaviour
             transform.rigidbody2D.AddForce(Vector2.right * moveForce, ForceMode2D.Force);
             //transform.position = new Vector3(transform.position.x + 0.2f, transform.position.y,0);
         }
-        if (Input.GetAxis("Horizontal") < 0 )
+        if (Input.GetAxis("Horizontal") < 0)
         {
 			running = true;
 			if(facingRight)
@@ -214,9 +233,12 @@ public class Player : MonoBehaviour
             rigidbody2D.velocity = new Vector2(maxSpeed, rigidbody2D.velocity.y);
         }
 
-		if(leftGround && Time.time-leftGroundTime > 0.2f)
-			onAir = true;
 
+        //Initialize a ghost (isws mono otan einai hooked)
+        if (rigidbody2D.velocity.x / maxSpeed > ghostsSpeedThreshold && Time.time - ghostsLastInitTime > ghostsInitFrequency)
+        {
+            instantiateGhost();
+        }
 
 
 		anim.SetBool("running",running);
@@ -225,49 +247,45 @@ public class Player : MonoBehaviour
 		anim.SetBool("shotHook",shotHook);
 		anim.SetBool("hooked",hooked);
 		anim.SetBool("onAir",onAir);
-		anim.SetBool("hitCeiling",hitHead);
+		anim.SetBool("hitCeiling",hitCeiling);
 
-		hitHead = false;
+		hitCeiling = false;
     }
+
+
+
 
 
     void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.tag == "Ceiling")
-			HitHead ();
-
-		
+		{
+			hitCeiling = true;
+			ceilingPenaltyStart = Time.time;
+			cancelHook();
+		}
 
 		if(other.collider.tag == "Ground")
 			StartCoroutine(GameOver());
 
 		if(other.collider.tag == "Platform")
 		{
-			if(other.contacts[0].point.y > other.transform.position.y) {
-				Debug.Log(other.contacts[0].point);
-				onAir = false;
-				leftGround = false;
-				jumped = false;
-			}
-			//else
-			//	HitHead();
+			onAir = false;
+			jumped = false;
 		}
         
     }
 
 	void OnCollisionExit2D(Collision2D coll) {
 		if(coll.collider.tag == "Platform")
-		{
-			leftGround = true;
-			leftGroundTime = Time.time;
-		}
+			onAir = true;
 	}
 
 
 
 	void shootHook()
 	{
-		if (!shotHook && Time.time - lastHookTime > hookDelay && Time.time - ceilingPenaltyStart > 1)
+		if (!shotHook && Time.time - lastHookTime > hookDelay && Time.time - ceilingPenaltyStart > ceilingPenaltyDuration)
 		{
 			shotHook = true;
 			hook = (GameObject)GameObject.Instantiate(hookPrefab, transform.position, Quaternion.identity);
@@ -290,12 +308,6 @@ public class Player : MonoBehaviour
 			Destroy(hook);
 			hookJoint.enabled = false;
 		}
-	}
-
-	void HitHead() {
-		hitHead = true;
-		ceilingPenaltyStart = Time.time;
-		cancelHook();
 	}
 
 	void Flip()
@@ -323,6 +335,18 @@ public class Player : MonoBehaviour
         }
         inCannon = false;
         firedFromCannon = true;
+    }
+
+
+    public void instantiateGhost(){
+        GameObject ghost = (GameObject)Instantiate(ghostPrefab, transform.position, transform.rotation);
+
+        Ghost ghostScript = ghost.GetComponent<Ghost>();
+        ghostScript.sprite = spriteRenderer.sprite;
+        ghostScript.lifetime = ghostsLifetime;
+        
+        ghostsLastInitTime = Time.time;
+
     }
 
 }
