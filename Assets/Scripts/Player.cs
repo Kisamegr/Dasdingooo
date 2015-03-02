@@ -34,16 +34,29 @@ public class Player : MonoBehaviour
 	public bool running;
 	public bool onAir;
 	public bool facingRight;
+   
 
 
 	private bool hitCeiling;
 	private float ceilingPenaltyStart;
+    public float ceilingPenaltyDuration = 1f;
 
 	private float zeta;
+
+
+    public GameObject ghostPrefab;
+   
+    public float ghostsSpeedThreshold = 0.7f;
+    public float ghostsInitFrequency = 0.25f;
+    public float ghostsLifetime = 5f;
+    private float ghostsLastInitTime;
+
+    private SpriteRenderer spriteRenderer;
 
     // Use this for initialization
     void Start()
     {
+
         shotHook = false;
 		jumped = false;
         hookJoint = (DistanceJoint2D)gameObject.GetComponent<DistanceJoint2D>();
@@ -57,6 +70,8 @@ public class Player : MonoBehaviour
 		running = false;
 		onAir = true;
 		facingRight = true;
+
+        spriteRenderer =  GetComponentInChildren<SpriteRenderer>();
     }
 
 	IEnumerator GameOver() {
@@ -219,6 +234,12 @@ public class Player : MonoBehaviour
         }
 
 
+        //Initialize a ghost (isws mono otan einai hooked)
+        if (rigidbody2D.velocity.x / maxSpeed > ghostsSpeedThreshold && Time.time - ghostsLastInitTime > ghostsInitFrequency)
+        {
+            instantiateGhost();
+        }
+
 
 		anim.SetBool("running",running);
 		anim.SetBool("jump",startJump);
@@ -230,6 +251,9 @@ public class Player : MonoBehaviour
 
 		hitCeiling = false;
     }
+
+
+
 
 
     void OnCollisionEnter2D(Collision2D other)
@@ -261,7 +285,7 @@ public class Player : MonoBehaviour
 
 	void shootHook()
 	{
-		if (!shotHook && Time.time - lastHookTime > hookDelay && Time.time - ceilingPenaltyStart > 1.5)
+		if (!shotHook && Time.time - lastHookTime > hookDelay && Time.time - ceilingPenaltyStart > ceilingPenaltyDuration)
 		{
 			shotHook = true;
 			hook = (GameObject)GameObject.Instantiate(hookPrefab, transform.position, Quaternion.identity);
@@ -311,6 +335,18 @@ public class Player : MonoBehaviour
         }
         inCannon = false;
         firedFromCannon = true;
+    }
+
+
+    public void instantiateGhost(){
+        GameObject ghost = (GameObject)Instantiate(ghostPrefab, transform.position, transform.rotation);
+
+        Ghost ghostScript = ghost.GetComponent<Ghost>();
+        ghostScript.sprite = spriteRenderer.sprite;
+        ghostScript.lifetime = ghostsLifetime;
+        
+        ghostsLastInitTime = Time.time;
+
     }
 
 }
