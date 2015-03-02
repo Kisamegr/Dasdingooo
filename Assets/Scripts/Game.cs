@@ -148,9 +148,11 @@ public class Game : MonoBehaviour {
 
 		if(Time.time - lastPlatformTime > nextPlatformTime) {
 
+			int index = Random.Range(0, platforms.GetLength(0));
 			Vector3 pos = new Vector3(platformSpawner.position.x, Random.Range(yMin + 5,yMax - 5), 0);
 
-			GameObject plat = (GameObject) Instantiate(platforms[0],pos,Quaternion.identity);
+			GameObject plat = (GameObject) Instantiate(platforms[index],pos,Quaternion.identity);
+
 
 			platformQueue.Enqueue(plat.transform);
 
